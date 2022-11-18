@@ -1,1 +1,68 @@
+1.จงเขียนโปรแกรมหาพื้นที่ของสามเหลี่ยม,พื้นที่ของสี่เหลี่ยม โดยผู้ใช้ป้อน ความยาวฐาน และส่วนสูงใดๆทางแป้นพิมพ์ จงเสร้างฟังก์ชันในการหาพื้นที่ดังตัวอย่าง float Triangle(float , float);
 
+#include<iostream>
+using namespace std;
+void Input_Triangle (float&, float&);
+void Input_Square (float&, float&);
+float Triangle (float, float);
+float Square (float, float);
+void Output (float, float, float, float, float, float);
+
+int main(){
+    float Base, Height, Width, Length, Triangle_Area, Square_Area;
+    Input_Triangle (Base, Height);
+    Input_Square (Width, Length);
+    Triangle_Area = Triangle (Base, Height);
+    Square_Area = Square (Width, Length);
+    Output (Base, Height, Triangle_Area, Width, Length, Square_Area);
+    return 0;
+}
+void Input_Triangle (float& N1, float& N2){
+    cout<<"Find Triangle Area"<<endl;
+    cout<<"Put base"; cin>>N1;
+    cout<<"Put height"; cin>>N2;
+}
+void Input_Square (float& N1, float& N2){
+    cout<<"Find Square Area"<<endl;
+    cout<<"Put width"; cin>>N1;
+    cout<<"Put length"; cin>>N2;
+}
+float Triangle (float Base, float Height){
+    return 0.5*Base*Height;
+}
+float Square (float Width, float Length){
+    return Width*Length;
+}
+void Output (float Base, float Height, float Triangle_Area, float Width, float Length, float Square_Area){
+    cout<<"------------------------------------"<<endl;
+    cout<<"Triangle Base : "<<Base<<" Height : "<<Height<<" Area = "<<Triangle_Area<<endl;
+    cout<<"Square Width  : "<<Width<<" Length : "<<Length<<" Area = "<<Square_Area<<endl;
+}
+
+2.จงเขียนโปรแกรมในการคิดดอกเบี้ย โดยสร้างฟังก์ชันในการคิดดอกเบี้ยประเภท 1 ปี  6 เดือน และ 3 เดือน โปรแกรมนี้ให้ผู้ใช้ป้อนเงินต้น และ อัตราดอกเบี้ยต่อปี การทำงานจะพิมพ์ว่าถ้า
+
+          ฝากประเภท 1 ปีได้เงินเท่าใด
+          ฝากประเภท 6 เดือนได้เงินเท่าใดใน 1 ปี
+          ฝากประเภท 3 เดือนได้เงินเท่าใดใน 1 ปี
+
+#include<iostream>
+using namespace std;
+void Input (float&, float&);
+void Output (float, float);
+int main(){
+    float Money, Interest;
+    Input (Money, Interest);
+    Output (Money, Interest);
+    return 0;
+}
+void Input (float& N1, float& N2){
+    cout<<"Put money."; cin>>N1;
+    cout<<"Put interest rate per year."; cin>>N2;
+}
+void Output (float N1, float N2){
+    cout<<"------------------------------------"<<endl;
+    cout<<"Money : "<<N1<<" ฿"<<endl;
+    cout<<"For one year, rewards = "<<(N1*N2)/100<<" ฿"<<endl;
+    cout<<"For six month, rewards = "<<((N1*N2)/100)/2<<" ฿"<<endl;
+    cout<<"For three month, rewards = "<<(N1*N2)/100/4<<" ฿"<<endl;    
+}
