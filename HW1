@@ -1,1 +1,27 @@
+// จงแปลง ชั่วโมง นาที วินาที ให้เป็นวินาทีทั้งหมด
 
+#include<iostream>
+using namespace std;
+void Input (int&, int&, int&);
+int Process (int, int, int);
+void Output (int, int, int, int);
+
+int main(){
+    int H, M, S, Result;
+    Input (H, M, S);
+    Result = Process (H, M, S);
+    Output (H, M, S, Result);
+    return 0;
+}
+void Input (int& N1, int& N2, int& N3){
+    cout<<"? : M : S"<<" Put hours."; cin>>N1;
+    cout<<N1<<" : ? : S"<<" Put Minutes."; cin>>N2;
+    cout<<N1<<" : "<<N2<<" : ?"<<" Put Seconds."; cin>>N3;
+}
+int Process (int N1, int N2, int N3){
+    return (N1*3600)+(N2*60)+N3;
+}
+void Output (int H, int M, int S, int N){
+    cout<<"---------------------"<<endl;
+    cout<<H<<" : "<<M<<" : "<<S<<" = "<<N<<" Sec."<<endl;
+}
