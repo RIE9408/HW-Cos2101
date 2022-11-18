@@ -1,1 +1,77 @@
+1.จงเขียนโปรแกรมเรียงลำดับเลขจำนวนเต็ม 4 จำนวนจากมากไปน้อย โดยผู้ใช้ป้อนเลข 4 จำนวนใดๆจากน้อยไปมาก ให้ใช้ฟังก์ชัน swap เมื่อ Compile และRun ปรากฏดังนี้
 
+  Please put 4 integer numbers ? ป้อน 1 2 3 4
+  ผลการทำงานเป็นดังนี้
+  Sorting is  4 3 2 1
+
+#include<iostream>
+using namespace std;
+void Input (int&, int&, int&, int&);
+void Sort (int&, int&, int&, int&);
+void Swap (int&, int&);
+void Output (int, int, int, int);
+int main(){
+    int N1, N2, N3, N4;
+    Input (N1, N2, N3, N4);
+    Sort (N1, N2, N3, N4);
+    Output (N1, N2, N3, N4);
+    return 0;
+}
+void Input (int& N1, int& N2, int& N3, int& N4){
+    cout<<"Please put 4 integer number."<<endl;
+    cin>>N1>>N2>>N3>>N4;
+}
+void Sort (int& N1, int& N2, int& N3, int& N4){
+    Swap (N1, N4);
+    Swap (N2, N3);
+}
+void Swap (int& N1, int& N2){
+    int Temp;
+    Temp=N1;
+    N1=N2;
+    N2=Temp;
+}
+void Output (int N1, int N2, int N3, int N4){
+    cout<<"----------------"<<endl;
+    cout<<"Sorting is "<<N1<<" "<<N2<<" "<<N3<<" "<<N4<<endl;
+}
+
+2.จงออกแบบและเขียนโปรแกรมเพื่อคำนวณหาเงินบำเหน็จ(reward)และเงินบำนาญ (pension)ของข้าราชการ กรณีที่ไม่ได้เป็นสมาชิก กบข โดย
+ 
+	เงินบำเหน็จ = เงินเดือนเดือนสุดท้าย(last) * จำนวนปีเวลาราชการ(years)
+	เงินบำนาญ =  เงินบำเหน็จ/50
+
+	**จำนวนปีเวลาราชการ หมายถึงจำนวนปีรวมเศษของปีถ้าถึงครึ่งปีให้นับเป็น 1
+
+#include<iostream>
+#include<cmath>
+using namespace std;
+void Input (float&, float&);
+float Reward (float, float);
+float Pension (float, float);
+void Output (float, float, float, float);
+
+int main(){
+    float Last_money, Year, Rewards1, Pension1;
+    Input (Last_money, Year);
+    Rewards1 = Reward (Last_money, Year);
+    Pension1 = Pension (Last_money, Year);
+    Output (Last_money, Year, Rewards1, Pension1);
+    return 0;
+}
+void Input (float& N1, float& N2){
+    cout<<"Put last money."; cin>>N1;
+    cout<<"Put Year."; cin>>N2;
+}
+float Reward (float N1, float N2){
+    return N1*(N2=round(N2-0.01));
+}
+float Pension (float N1, float N2){
+    return (N1*(N2=round(N2-0.01)))/50;
+}
+void Output (float N1, float N2, float N3, float N4){
+    cout<<"---------------------------------"<<endl;
+    cout<<"Last_money : "<<N1<<" Year : "<<N2<<endl;
+    cout<<"Reward  = "<<N3<<endl;
+    cout<<"Pension = "<<N4<<endl;
+}
