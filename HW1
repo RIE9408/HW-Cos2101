@@ -21,7 +21,7 @@ void Input (int& N1, int& N2, int& N3){
 int Process (int N1, int N2, int N3){
     return (N1*3600)+(N2*60)+N3;
 }
-void Output (int H, int M, int S, int N){
+void Output (int H, int M, int S, int Result){
     cout<<"---------------------"<<endl;
-    cout<<H<<" : "<<M<<" : "<<S<<" = "<<N<<" Sec."<<endl;
+    cout<<H<<" : "<<M<<" : "<<S<<" = "<<Result<<" Sec."<<endl;
 }
