@@ -126,8 +126,6 @@ void Output (int Unit, int Bill){
 #include<iostream>
 using namespace std;
 void Input (int&, int&, int&);
-void Check_Day (int&);
-void Check_Month (int&);
 void Output (int, int, int, int, int, int);
 
 int main(){
@@ -140,29 +138,10 @@ int main(){
     return 0;
 }
 void Input (int& N_1, int& N_2, int& N_3){
-    cout<<"----------------"<<endl;
-    cout<<"? / month / year"<<endl;
-    cout<<"----------------"<<endl;
-    cout<<"day?"; cin>>N_1; Check_Day (N_1);
-    cout<<"----------------"<<endl;
-    cout<<N_1<<" / ? / year"<<endl;
-    cout<<"----------------"<<endl;
-    cout<<"month?"; cin>>N_2; Check_Month (N_2);
-    cout<<"----------------"<<endl;
-    cout<<N_1<<" / "<<N_2<<" / ?"<<endl;
-    cout<<"----------------"<<endl;
-    cout<<"year?"; cin>>N_3;
+    cout<<"----------------\n ? / month / year\n ----------------\n day?"; cin>>N_1;
+    cout<<"----------------\n" <<N_1<<" / ? / year\n ----------------\n month?"; cin>>N_2;
+    cout<<"----------------\n" <<N_1<<" / "<<N_2<<" / ?\n ----------------\n year?"; cin>>N_3;
     cout<<"-----------------------------------"<<endl;
-}
-void Check_Day (int& N_1){
-    while (N_1<1||N_1>30){
-        cout<<"day? (** You can enter integers 1 to 30. **)"<<endl; cin>>N_1;
-    }
-}
-void Check_Month (int& N_1){
-    while (N_1<1||N_1>12){
-        cout<<"month? (** You can enter integers 1 to 12. **)"<<endl; cin>>N_1;
-    }
 }
 void Output (int D_1, int M_1, int Y_1, int D_2, int M_2, int Y_2){
     int D = D_1-D_2, M = M_1-M_2, Y = Y_1-Y_2;
@@ -171,197 +150,51 @@ void Output (int D_1, int M_1, int Y_1, int D_2, int M_2, int Y_2){
     
     if (Y==0){
         if (M==0){
-            (D==0) ? cout<<"You are less than 1 day old"<<endl : (D>0) ? cout<<"AGE = "<<D<<" D"<<endl : cout<<"You are born in "<<-(D)<<" D"<<endl ;
-            
-            /*if (D==0){
-                cout<<"You are less than 1 day old"<<endl;
-            }    
-            else if (D>0){
-                cout<<"AGE = "<<D<<" D"<<endl;
-            }
-            else {
-                cout<<"You are born in "<<-(D)<<" D"<<endl;
-            }*/
+            (D==0) ? cout<<"You are less than 1 day old"<<endl : (D>0) ? cout<<"AGE = "<<D<<" day"<<endl : cout<<"You will be born in the next "<<-(D)<<" day"<<endl ;
         }
         else if (M>0){
-            (D==0) ? cout<<"AGE = "<<M<<" M"<<endl : (D>0) ? cout<<"AGE = "<<M<<" M "<<D<<" D"<<endl : (M==1) ? cout<<"AGE = "<<30+(D)<<" D"<<endl : cout<<"AGE = "<<M-1<<" M "<<30+(D)<<" D"<<endl ; 
-            
-            /*if (D==0){
-                cout<<"AGE = "<<M<<" M"<<endl;
-            }    
-            else if (D>0){
-                cout<<"AGE = "<<M<<" M "<<D<<" D"<<endl;
-            }
-            else {
-                if (M==1){ 
-                    cout<<"AGE = "<<30+(D)<<" D"<<endl;
-                }
-                else{ 
-                    cout<<"AGE = "<<M-1<<" M "<<30+(D)<<" D"<<endl;
-                }
-            }*/
+            (D==0) ? cout<<"AGE = "<<M<<" month"<<endl : (D>0) ? cout<<"AGE = "<<M<<" month "<<D<<" day"<<endl : (M==1) ? cout<<"AGE = "<<30+(D)<<" day"<<endl : cout<<"AGE = "<<M-1<<" month "<<30+(D)<<" day"<<endl ; 
         }    
         else {
-            (D==0) ? cout<<"You are born in "<<-(M)<<" M"<<endl : (D<0) ? cout<<"You are born in "<<+(M)<<" M "<<+(D)<<" D"<<endl : (M==-1) ? cout<<"You are born in "<<30-D<<" D"<<endl : cout<<"You are born in "<<-(1+(M))<<" M "<<30-D<<" D"<<endl ; 
-            
-            /*if (D==0){
-                cout<<"You are born in "<<-(M)<<" M"<<endl;
-            }    
-            else if (D>0){
-                if (M==-1){ 
-                    cout<<"You are born in "<<30-D<<" D"<<endl;
-                }
-                else { 
-                    cout<<"You are born in "<<-(1+(M))<<" M "<<30-D<<" D"<<endl;
-                }
-            }
-            else {
-                cout<<"You are born in "<<+(M)<<" M "<<+(D)<<" D"<<endl;
-            }*/
-            
+            (D==0) ? cout<<"You will be born in the next "<<-(M)<<" month"<<endl : (D<0) ? cout<<"You will be born in the next "<<+(M)<<" month "<<+(D)<<" day"<<endl : (M==-1) ? cout<<"You will be born in the next "<<30-D<<" day"<<endl : cout<<"You will be born in the next "<<-(1+(M))<<" month "<<30-D<<" day"<<endl ; 
         }
     }
     else if (Y>0){
         if (M==0){
-            (D==0) ? cout<<"AGE = "<<Y<<" Y"<<endl : (D>0) ? cout<<"AGE = "<<Y<<" Y "<<D<<" D"<<endl : (Y==1) ? cout<<"AGE = "<<11<<" M "<<30+(D)<<" D"<<endl : cout<<"AGE = "<<Y-1<<" Y "<<11<<" M "<<30+(D)<<" D"<<endl ;
-            
-            /*if (D==0){
-                cout<<"AGE = "<<Y<<" Y"<<endl;
-            }    
-            else if (D>0){
-                cout<<"AGE = "<<Y<<" Y "<<D<<" D"<<endl;
-            }
-            else {
-                
-                if (Y==1){ 
-                    cout<<"AGE = "<<11<<" M "<<30+(D)<<" D"<<endl;
-                }
-                else{ 
-                    cout<<"AGE = "<<Y-1<<" Y "<<11<<" M "<<30+(D)<<" D"<<endl;
-                }
-            }*/
+            (D==0) ? cout<<"AGE = "<<Y<<" year"<<endl : (D>0) ? cout<<"AGE = "<<Y<<" year "<<D<<" day"<<endl : (Y==1) ? cout<<"AGE = "<<11<<" month "<<30+(D)<<" day"<<endl : cout<<"AGE = "<<Y-1<<" year "<<11<<" month "<<30+(D)<<" day"<<endl ;
         }
         else if (M>0){
-            (D==0) ? cout<<"AGE = "<<Y<<" Y "<<M<<" M"<<endl : (D>0) ? cout<<"AGE = "<<Y<<" Y "<<M<<" M "<<D<<" D"<<endl : (M==1) ? cout<<"AGE = "<<Y<<" Y "<<30+(D)<<" D"<<endl : cout<<"AGE = "<<Y<<" Y "<<M-1<<" M "<<30+(D)<<" D"<<endl ;
-            
-            /*if (D==0){
-                    cout<<"AGE = "<<Y<<" Y "<<M<<" M"<<endl;    
-                }    
-            else if (D>0){
-                cout<<"AGE = "<<Y<<" Y "<<M<<" M "<<D<<" D"<<endl;    
-            }
-            else {
-                if (M==1){ 
-                    cout<<"AGE = "<<Y<<" Y "<<30+(D)<<" D"<<endl;
-                }
-                else{ 
-                    cout<<"AGE = "<<Y<<" Y "<<M-1<<" M "<<30+(D)<<" D"<<endl;
-                }    
-            }*/
+            (D==0) ? cout<<"AGE = "<<Y<<" year "<<M<<" month"<<endl : (D>0) ? cout<<"AGE = "<<Y<<" year "<<M<<" month "<<D<<" day"<<endl : (M==1) ? cout<<"AGE = "<<Y<<" year "<<30+(D)<<" day"<<endl : cout<<"AGE = "<<Y<<" year "<<M-1<<" month "<<30+(D)<<" day"<<endl ;
         }    
         else {
             if (D==0){
-                (Y==1) ? cout<<"AGE = "<<12+(M)<<" M"<<endl : cout<<"AGE = "<<Y-1<<" Y "<<12+(M)<<" M"<<endl ;
-                
-                /*if (Y==1){
-                    cout<<"AGE = "<<12+(M)<<" M"<<endl;
-                }
-                else {
-                    cout<<"AGE = "<<Y-1<<" Y "<<12+(M)<<" M"<<endl;
-                }*/    
+                (Y==1) ? cout<<"AGE = "<<12+(M)<<" month"<<endl : cout<<"AGE = "<<Y-1<<" year "<<12+(M)<<" month"<<endl ;
             }    
             else if (D>0){
-                (M==-1 && Y==1 || M==-2 && Y==1) ? cout<<"AGE = "<<12+M<<" M "<<D<<" D"<<endl : cout<<"AGE = "<<Y-1<<" Y "<<12+M<<" M "<<D<<" D"<<endl ;
-                
-                /*if (M==-1 && Y==1 || M==-2 && Y==1){ 
-                    cout<<"AGE = "<<12+M<<" M "<<D<<" D"<<endl;
-                }
-                else { 
-                    cout<<"AGE = "<<Y-1<<" Y "<<12+M<<" M "<<D<<" D"<<endl;
-                }*/    
+                (M==-1 && Y==1 || M==-2 && Y==1) ? cout<<"AGE = "<<12+M<<" month "<<D<<" day"<<endl : cout<<"AGE = "<<Y-1<<" year "<<12+M<<" month "<<D<<" day"<<endl ;
             }
             else {
-                (Y==1) ? cout<<"AGE = "<<12+(M)<<" M "<<30+(D)<<" D"<<endl : cout<<"AGE = "<<Y-1<<" Y "<<12+(M)<<" M "<<30+(D)<<" D"<<endl ;
-                
-                /*if (Y==1){ 
-                    cout<<"AGE = "<<12+(M)<<" M "<<30+(D)<<" D"<<endl;
-                }
-                else{ 
-                    cout<<"AGE = "<<Y-1<<" Y "<<12+(M)<<" M "<<30+(D)<<" D"<<endl;
-                }*/    
+                (Y==1) ? cout<<"AGE = "<<12+(M)<<" month "<<30+(D)<<" day"<<endl : cout<<"AGE = "<<Y-1<<" year "<<12+(M)<<" month "<<30+(D)<<" day"<<endl ;
             }
         }
     }
     else {
         if (M==0){
-            (D==0) ? cout<<"You are born in "<<-(Y)<<" Y"<<endl : (D<0) ? cout<<"You are born in "<<-(Y)<<" Y "<<-(D)<<" D"<<endl : (Y==-1) ? cout<<"You are born in "<<11<<" M "<<30-D<<" D"<<endl : cout<<"You are born in "<<-(1+(Y))<<" Y "<<11<<" M "<<30-D<<" D"<<endl ;
-            
-            /*if (D==0){
-                cout<<"You are born in "<<-(Y)<<" Y"<<endl;
-            }    
-            else if (D>0){
-                 if (Y==-1){ 
-                    cout<<"You are born in "<<11<<" M "<<30-D<<" D"<<endl;
-                }
-                else{ 
-                    cout<<"You are born in "<<-(1+(Y))<<" Y "<<11<<" M "<<30-D<<" D"<<endl;
-                }
-            }
-            else {
-                cout<<"You are born in "<<-(Y)<<" Y "<<-(D)<<" D"<<endl;
-            }*/
+            (D==0) ? cout<<"You will be born in the next "<<-(Y)<<" year"<<endl : (D<0) ? cout<<"You will be born in the next "<<-(Y)<<" year "<<-(D)<<" day"<<endl : (Y==-1) ? cout<<"You will be born in the next "<<11<<" month "<<30-D<<" day"<<endl : cout<<"You will be born in the next "<<-(1+(Y))<<" year "<<11<<" month "<<30-D<<" day"<<endl ;
         }
         else if (M>0){
             if (D==0){
-                (Y==-1) ? cout<<"You are born in "<<12-M<<" M"<<endl : cout<<"You are born in "<<-(1+(Y))<<" Y "<<12-M<<" M"<<endl ;
-                
-                /*if (Y==-1){ 
-                    cout<<"You are born in "<<12-M<<" M"<<endl;
-                }
-                else{
-                    cout<<"You are born in "<<-(1+(Y))<<" Y "<<12-M<<" M"<<endl;
-                }*/    
+                (Y==-1) ? cout<<"You will be born in the next "<<12-M<<" month"<<endl : cout<<"You will be born in the next "<<-(1+(Y))<<" year "<<12-M<<" month"<<endl ;
             }    
             else if (D>0){
-                (Y==-1) ? cout<<"You are born in "<<11-M<<" M "<<30-D<<" D"<<endl : cout<<"You are born in "<<-(1+(Y))<<" Y "<<11-M<<" M "<<30-D<<" D"<<endl ;
-                
-                /*if (Y==-1){ 
-                    cout<<"You are born in "<<11-M<<" M "<<30-D<<" D"<<endl; 
-                }
-                else{ 
-                    cout<<"You are born in "<<-(1+(Y))<<" Y "<<11-M<<" M "<<30-D<<" D"<<endl;
-                }*/    
+                (Y==-1) ? cout<<"You will be born in the next "<<11-M<<" month "<<30-D<<" day"<<endl : cout<<"You will be born in the next "<<-(1+(Y))<<" year "<<11-M<<" month "<<30-D<<" day"<<endl ;
             }
             else {
-                
-                (Y==-1) ? cout<<"You are born in "<<12-M<<" M "<<-(D)<<" D"<<endl : cout<<"You are born in "<<-(2+(Y))<<" Y "<<12-M<<" M "<<-(D)<<" D"<<endl ;
-                
-                /*if (Y==-1){ 
-                    cout<<"You are born in "<<12-M<<" M "<<-(D)<<" D"<<endl;
-                }
-                else{ 
-                    cout<<"You are born in "<<-(2+(Y))<<" Y "<<12-M<<" M "<<-(D)<<" D"<<endl;
-                }*/    
+                (Y==-1) ? cout<<"You will be born in the next "<<12-M<<" month "<<-(D)<<" day"<<endl : cout<<"You will be born in the next "<<-(2+(Y))<<" year "<<12-M<<" month "<<-(D)<<" day"<<endl ;
             }
         }    
         else {
-            (D==0) ? cout<<"You are born in "<<-(Y)<<" Y "<<-(M)<<" M"<<endl : (D<0) ? cout<<"You are born in "<<-(Y)<<" Y "<<-(M)<<" M "<<-(D)<<" D"<<endl : (M==-1 && Y==-1 || M==-1 && Y==-2) ? cout<<"You are born in "<<-(Y)<<" Y "<<30-D<<" D"<<endl : cout<<"You are born in "<<-(Y)<<" Y "<<-(1+(M))<<" M "<<30-D<<" D"<<endl ;
-            
-            /*if (D==0){
-                cout<<"You are born in "<<-(Y)<<" Y "<<-(M)<<" M"<<endl;    
-            }    
-            else if (D>0){
-                if (M==-1 && Y==-1 || M==-1 && Y==-2){
-                    cout<<"You are born in "<<-(Y)<<" Y "<<30-D<<" D"<<endl;
-                }
-                else{ 
-                    cout<<"You are born in "<<-(Y)<<" Y "<<-(1+(M))<<" M "<<30-D<<" D"<<endl;
-                }    
-            }
-            else {
-                cout<<"You are born in "<<-(Y)<<" Y "<<-(M)<<" M "<<-(D)<<" D"<<endl;    
-            }*/
+            (D==0) ? cout<<"You will be born in the next "<<-(Y)<<" year "<<-(M)<<" month"<<endl : (D<0) ? cout<<"You will be born in the next "<<-(Y)<<" year "<<-(M)<<" month "<<-(D)<<" day"<<endl : (M==-1 && Y==-1 || M==-1 && Y==-2) ? cout<<"You will be born in the next "<<-(Y)<<" year "<<30-D<<" day"<<endl : cout<<"You will be born in the next "<<-(Y)<<" year "<<-(1+(M))<<" month "<<30-D<<" day"<<endl ;
         }
     }
-}    
-    
+}   
