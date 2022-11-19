@@ -1,0 +1,189 @@
+1.จงเขียนโปรแกรมหาความแตกต่าง เพื่อคำนวณหาค่าเฉลี่ยของกลุ่มตัวเลขและหาความแตกต่างระหว่างค่าของข้อมูลกับค่าเฉลี่ยของข้อมูล พิมพ์ออกมาทางจอภาพ
+
+#include<iostream>
+#include<iomanip>
+#include<string>
+using namespace std;
+void Text ();
+void Input (int&, float []);
+void Find_Sum_and_Average (int&, float [], float&, float&);
+void Output (int&, float [], float&, float&);
+
+int main(){
+    int Index=0;
+    float Number[10]={}, Sum, Average;
+    Input (Index, Number);
+    Find_Sum_and_Average (Index, Number, Sum, Average);
+    Output (Index, Number, Sum, Average);
+    return 0;
+}
+void Text (){
+    cout<<" Can put 1 set of elements at one time."<<endl;
+    cout<<" Using ',' or ' ' as the elements separator in the set."<<endl;
+    cout<<" * Example put 1,2,3 or 1 2 3 and press 'Enter' *\n"<<endl;
+    cout<<"    Set Number ";
+}
+void Input (int& Index, float Number[]){
+    int Len_Data_Before_Cleaning, Len_Data_After_Cleaning;
+    string Data_Before_Cleaning="", Data_After_Cleaning="", Data_for_Add="";
+    Text ();
+    getline(cin,Data_Before_Cleaning);
+    Len_Data_Before_Cleaning = Data_Before_Cleaning.length();
+    for (int i=0; i<Len_Data_Before_Cleaning; i++){
+        if (Data_Before_Cleaning.at(i)>='0' && Data_Before_Cleaning.at(i)<='9' || Data_Before_Cleaning.at(i)=='-' || Data_Before_Cleaning.at(i)=='.'){
+            Data_After_Cleaning+=Data_Before_Cleaning.at(i);
+        }
+        else { Data_After_Cleaning+='X'; }
+    }
+    Data_After_Cleaning+='X';
+    Len_Data_After_Cleaning = Data_After_Cleaning.length();
+    for (int i=0; i<Len_Data_After_Cleaning; i++){  
+        if (Data_After_Cleaning.at(i)!='X'){  Data_for_Add+=Data_After_Cleaning.at(i); }
+        else { Number[Index]=stof(Data_for_Add); Data_for_Add=""; Index++; }
+    } 
+}
+void Find_Sum_and_Average (int& Index, float Number[], float& Sum, float& Average){
+    for (int i=0; i<=Index-1; i++){ Sum+=Number[i]; }
+    Average = Sum / (Index);
+}
+void Output (int& Index, float Number[], float& Sum, float& Average){
+    for (int i=1; i<54; i++){ cout<<"-"; }cout<<endl;
+    cout<<" Number["<<Index<<"]{ "; 
+    for (int i=0; i<=Index-1; i++){ (i<Index-1) ? cout<<Number[i]<<", " : cout<<Number[i] ; } cout<<" }"<<endl;
+    cout<<" Average = "<<Average<<endl;
+    cout<<" Array[Index]   Data   Difference"<<endl;
+    for (int i=0; i<=Index-1; i++){   float Difference = (Number[i]>Average) ? Number[i]-Average : Average-Number[i] ;
+        cout<<"  Number["<<i<<"]"<<setw(8)<<Number[i]<<setw(10)<<Difference<<endl;
+    }
+}
+
+2.จงเขียนโปรแกรมปฏิบัติการกับเซต โดยต้องการให้ผู้ใช้ป้อนเลขจำนวนเต็ม 2 กลุ่มเก็บใน เซต A และ เซต B ตามลำดับ  จงหา A UNION B และ A-B
+
+#include<iostream>
+#include<string>
+#include <algorithm>
+using namespace std;
+void Text (int&);
+void Input (int&, int&, float []);
+void Union_ (int&, int&, int&, float [], float [], float []);
+void Difference_ (int&, int&, int&, float [], float [], float []);
+void Output (int&, int&, int&, int&, float [], float [], float [], float []);
+
+int main(){
+    int Index_A=0, Index_B=0, Index_A_u_B=0, Index_A_d_B=0, N=0;
+    float A[10]={}, B[10]={}, A_u_B[10]={}, A_d_B[10]={};
+    
+    Input (Index_A, N, A); 
+    Input (Index_B, N, B);
+    Union_ (Index_A, Index_B, Index_A_u_B, A, B, A_u_B);
+    Difference_ (Index_A, Index_B, Index_A_d_B, A, B, A_d_B);
+    Output (Index_A, Index_B, Index_A_u_B, Index_A_d_B, A, B, A_u_B, A_d_B);
+    return 0;
+}
+void Text (int& N){
+    (N==0) ? cout<<" Can put 1 set of elements at one time."<<endl,
+             cout<<" Using ',' or ' ' as the elements separator in the set."<<endl,
+             cout<<" * Example put 1,2,3 or 1 2 3 and press 'Enter' *\n"<<endl,
+             cout<<"    Set A " : 
+             cout<<"    Set B " ;
+}
+void Input (int& Index, int& N, float Arr[]){
+    int Len_Data_Before_Cleaning, Len_Data_After_Cleaning;
+    string Data_Before_Cleaning="", Data_After_Cleaning="", Data_for_Add="";
+    Text (N);
+    getline(cin,Data_Before_Cleaning);
+    Len_Data_Before_Cleaning = Data_Before_Cleaning.length();
+    for (int i=0; i<Len_Data_Before_Cleaning; i++){
+        if (Data_Before_Cleaning.at(i)>='0' && Data_Before_Cleaning.at(i)<='9' || Data_Before_Cleaning.at(i)=='-' || Data_Before_Cleaning.at(i)=='.'){
+            Data_After_Cleaning+=Data_Before_Cleaning.at(i);
+        }
+        else { Data_After_Cleaning+='X'; }
+    }
+    Data_After_Cleaning+='X'; N=1;
+    Len_Data_After_Cleaning = Data_After_Cleaning.length();
+    for (int i=0; i<Len_Data_After_Cleaning; i++){  
+        if (Data_After_Cleaning.at(i)!='X'){ Data_for_Add+=Data_After_Cleaning.at(i); }
+        else { Arr[Index]=stof(Data_for_Add); Data_for_Add=""; Index++; }
+    } cout<<endl;
+    
+}
+void Union_ (int& Index_A, int& Index_B, int& Index_A_u_B, float A[], float B[], float A_u_B[]){
+    int i, j;
+    for(i=0,j=0; i<Index_A && j<Index_B;){
+        if       (A[i]<B[j]){ A_u_B[Index_A_u_B]=A[i]; i++; Index_A_u_B++; }
+        else if  (A[i]>B[j]){ A_u_B[Index_A_u_B]=B[j]; j++; Index_A_u_B++; }
+        else                { A_u_B[Index_A_u_B]=A[i]; i++; j++; Index_A_u_B++; }
+    }
+    if       (i<Index_A){ for(; i<Index_A; i++){ A_u_B[Index_A_u_B]=A[i]; Index_A_u_B++; } }
+    else if  (j<Index_B){ for(; j<Index_B; j++){ A_u_B[Index_A_u_B]=B[j]; Index_A_u_B++; } }
+    sort(A_u_B, A_u_B+Index_A_u_B);
+}
+void Difference_ (int& Index_A, int& Index_B, int& Index_A_d_B, float A[], float B[], float A_d_B[]){
+    for(int i=0; i<Index_A; i++){
+        bool NotFound=true;
+        for(int j=0; j<Index_B; j++){
+            if(A[i]==B[j]){ NotFound=false; }
+        }
+        if(NotFound==true){ A_d_B[Index_A_d_B]=A[i]; Index_A_d_B++; }
+    }
+    sort(A_d_B, A_d_B+Index_A_d_B);
+}
+void Output (int& Index_A, int& Index_B, int& Index_A_u_B, int& Index_A_d_B, float A[], float B[], float A_u_B[], float A_d_B[]){
+    for (int i=1; i<54; i++){ cout<<"-"; }cout<<endl;
+    cout<<" A["<<Index_A<<"]{ "; 
+    for (int j=0; j<=Index_A-1; j++){ (j<Index_A-1) ? cout<<A[j]<<", " : cout<<A[j] ; } cout<<" }\n"<<endl;
+    
+    cout<<" B["<<Index_B<<"]{ "; 
+    for (int j=0; j<=Index_B-1; j++){ (j<Index_B-1) ? cout<<B[j]<<", " : cout<<B[j] ; } cout<<" }\n"<<endl;
+    
+    cout<<" A U B["<<Index_A_u_B<<"]{ "; 
+    for (int i=0; i<=Index_A_u_B-1; i++){ (i<Index_A_u_B-1) ? cout<<A_u_B[i]<<", " : cout<<A_u_B[i] ; } cout<<" }\n"<<endl;
+    
+    cout<<" A - B["<<Index_A_d_B<<"]{ "; 
+    for (int i=0; i<=Index_A_d_B-1; i++){ (i<Index_A_d_B-1) ? cout<<A_d_B[i]<<", " : cout<<A_d_B[i] ; } cout<<" }\n"<<endl;
+}
+
+3.บริษัทโฮมรามคำแหงเป็นบริษัทขายอุปกรณ์ไฟฟ้ามีการจัดโปรโมชันประจำปีเพื่อลดราคาสินค้าให้แก่ลูกค้าโดยลูกค้าแบ่งเป็น 3 กลุ่มคือ
+      - สมาชิกบัตรทอง(Gold card)
+      - สมาชิกบัตรแพตตินัม(Platinum card)
+      - ลูกค้าทั่วไป(General customer) 
+จงเขียนโปรแกรมหาส่วนลด(discount) ของการซื้อสินค้า(buy) และยอดสุทธิ(net) ที่ลูกค้าต้องจ่ายโดยมีเงื่อนไขการให้ส่วนลด(%) ดังนี้
+
+
+ลูกค้า                      ยอดซื้อสินค้า (buy)
+                      5,000 - 20,000    20,001 - 100,000    > 100,000
+สมาชิกบัตรทอง                 15%               20%              25%
+สมาชิกบัตรแพตตินัม             10%               15%              20%
+ทั่วไป                         7%               10%              15%
+
+#include<iostream>
+using namespace std;
+void Input (float&, int&);
+void Find_Discount (float&, int&, float&);
+void Output (float&, float&);
+
+int main(){
+    int Customer_Type;
+    float Amount, Discount;
+    Input (Amount, Customer_Type);
+    Find_Discount (Amount, Customer_Type, Discount);
+    Output (Amount, Discount);
+    return 0;
+}
+void Input (float& Amount, int& Customer_Type){
+    cout<<"Amount ?"; cin>>Amount; while (Amount<0){ cin>>Amount; }
+    cout<<"Customer type ?\n 1. Gold card\n 2. Platinum card\n 3. General"<<endl;   
+    cin>>Customer_Type; while (Customer_Type<1 || Customer_Type>3){ cin>>Customer_Type; }
+}
+void Find_Discount (float& Amount, int& Customer_Type, float& Discount){
+    if (Amount<5000){ Discount = 0; }
+    else if (Amount<20001) { Discount = (Customer_Type==1) ? Amount * 0.15 : (Customer_Type==2) ? Amount * 0.10 : Amount * 0.07 ; }
+    else if (Amount<100001){ Discount = (Customer_Type==1) ? Amount * 0.20 : (Customer_Type==2) ? Amount * 0.15 : Amount * 0.10 ; }
+    else                   { Discount = (Customer_Type==1) ? Amount * 0.25 : (Customer_Type==2) ? Amount * 0.20 : Amount * 0.15 ; }
+}
+void Output (float& Amount, float& Discount){
+    cout<<"-----------"<<endl;
+    cout<<"Amount   = "<<Amount<<endl;
+    cout<<"Discount = "<<Discount<<endl;
+    cout<<"Net      = "<<Amount - Discount<<endl;
+}
