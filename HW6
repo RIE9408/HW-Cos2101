@@ -79,12 +79,12 @@ void Output (int& Data){
 
 3.จงเขียนโปรแกรมแปลงตัวอักษรภาษาอังกฤษตัวใหญ่ให้เป็นตัวเลขที่สอดคล้องกันกับปุ่มของโทรศัพท์มือถือ
 
-                  อักษร           	         ปุ่มโทรศัพท์มือถือ
-              ‘A’ ’B’ ‘C’                          2
-              ‘D’ ’E’ ‘F’                          3
-             	‘G’ ‘H’ ‘I’                          4
-             	‘J’ ‘K’ ‘L’                          5
-             	‘M’ ‘N’ ‘O’                          6  
+                   อักษร           	           ปุ่มโทรศัพท์มือถือ
+                ‘A’ ’B’ ‘C’                          2
+                ‘D’ ’E’ ‘F’                          3
+                ‘G’ ‘H’ ‘I’                          4
+            	‘J’ ‘K’ ‘L’                          5
+              	‘M’ ‘N’ ‘O’                          6  
              	‘P’ ‘Q’ ‘R’ ‘S’                      7
              	‘T’ ‘U’ ‘V’                          8
              	‘W’ ‘X’ ‘Y’ ‘Z’                      9
@@ -133,4 +133,148 @@ void Output (string& Data){
     - ผู้เล่นสามารถทายตัวเลขซ้ำๆจนกระทั่งทายถูกทุกหลักอย่างถูกต้อง
     - เมื่อเกมส์จบ โปรแกรมจะสรุปจำนวนครั้งที่ทายทั้งหมด  พิมพ์ออกมาทางจอภาพ
     
+#include<iostream>
+#include<string>
+#include<unistd.h>
+using namespace std;
+void Line ();
+void Start ();
+void Guideline (string&);
+void Loading ();
+void Main_System (int&, int&, int&, int&, int&, int&, int&, int&, int&, bool&, bool&, bool&, bool&, bool&, bool&, bool&, bool&);
+void Create_Number (int &, int&, int&, int&);
+void Check (int&, int&, int&, int&, int&, int&, bool&, bool&, bool&, bool&, bool&, bool&, bool&, bool&);
+void End ();
+
+int main(){
+    string Guide="";
+    bool N1_Status=1, N2_Status=1, N3_Status=1, N4_Status=1, N1_Display=1, N2_Display=1, N3_Display=1, N4_Display=1;
+    int  N_Form_User=-1, Loop_Status=0, Round=1, Chance_Guess=7, Text=0, N1=-1, N2=-1, N3=-1, N4=-1;
+    
+    Start ();
+    Guideline (Guide);
+    Loading ();
+
+    do{
+        Create_Number (N1, N2, N3, N4);
+        do{
+            Main_System (N_Form_User, Loop_Status, Round, Chance_Guess, Text, N1, N2, N3, N4, N1_Display, N2_Display, N3_Display, N4_Display, N1_Status, N2_Status, N3_Status, N4_Status);
+            Check (N_Form_User, Text, N1, N2, N3, N4, N1_Display, N2_Display, N3_Display, N4_Display, N1_Status, N2_Status, N3_Status, N4_Status);
+            Chance_Guess--;
+            
+            if ( ( Chance_Guess==0 && (N1_Status==1 || N2_Status==1 || N3_Status==1 || N4_Status==1) ) || (N1_Status==0 && N2_Status==0 && N3_Status==0 && N4_Status==0) ){ 
+                Main_System (N_Form_User, Loop_Status, Round, Chance_Guess, Text, N1, N2, N3, N4, N1_Display, N2_Display, N3_Display, N4_Display, N1_Status, N2_Status, N3_Status, N4_Status);
+                Loop_Status=1;
+            }
+        } while (Loop_Status==0);
+
+        if ( N1_Status==0 && N2_Status==0 && N3_Status==0 && N4_Status==0 || Round==3 ){ Loop_Status=2; }
+        else { 
+          N_Form_User=-1, Loop_Status=0, Round++, Chance_Guess=7, Text=0, N1=-1, N2=-1, N3=-1, N4=-1, N1_Display=1, N2_Display=1, N3_Display=1, N4_Display=1, N1_Status=1, N2_Status=1, N3_Status=1, N4_Status=1 ;
+        }
+    } while (Loop_Status==1 || Loop_Status==0);
+    End ();
+    return 0;
+}
+void Line (){
+    for (int i=1; i<=85; i++){ cout<<"_"; }cout<<"\n"<<endl;
+}
+void Start (){
+    Line ();
+    string X = "0111110000111000010000010011111000000100000100100000100100000100111110001111100111110|" 
+               "0100000010000010010000010010000100000101000100100000100110001100100001001000000100001|"
+               "0111110010000010010000010011110000000100100100100000100101010100111100001111100111100|"
+               "0100000010000010010000010010010000000100010100100000100100100100100001001000000100100|"
+               "0100000000111000000111000010000100000100000100001110000100100100111110001111100100001|";
+    for (int i=0; i<X.length(); i++){
+        (X.at(i)=='1') ? cout<<"▪" : cout<<" " ;
+        (X.at(i)=='|') ? cout<<endl : cout<<"" ;
+    }
+    cout<<"\n Loading "; sleep(1); cout<<"."; sleep(1); cout<<"."; sleep(1); cout<<"."<<endl; sleep(1);
+}
+void Guideline (string& Guide){
+    Line ();
+    cout<<"  This is the guide of this game.\n"
+          "  > There are four unique puzzle numbers.\n"
+          "  > You can only guess one number at a time.\n"
+          "  > If you can't guess four numbers within seven times, The four puzzle numbers will change.\n"
+          "  > You can only play this game three times.\n\n"
+          "  Press 'Enter' to start.\n\n";
+    string Guid; getline(cin,Guid); while (Guid!=Guide){ getline(cin,Guid); }
+}
+void Loading (){
+    Line ();
+    cout<<"\n\n\n\n\n\n Loading "; sleep(1); cout<<"."; sleep(1); cout<<"."; sleep(1); cout<<"."<<endl;
+}
+void Main_System (int& N_Form_User, int& Loop_Status, int& Round, int& Chance_Guess, int& Text, int & N1, int& N2, int& N3, int& N4, bool& N1_Display, bool& N2_Display, bool& N3_Display, bool& N4_Display, bool& N1_Status, bool& N2_Status, bool& N3_Status, bool&N4_Status){
+    Line ();
+    cout<<"           ╔═════════════╗               Round : "; (Round==1) ? cout<<"First" : (Round==2) ? cout<<"Second" : cout<<"Last" ; cout<<endl;
+    cout<<"           "; if (Round==3){ N1_Display=0; }
+    (N1_Display==1) ? cout<<"  ?" : cout<<"  "<<N1 ;
+    (N2_Display==1) ? cout<<"  ?" : cout<<"  "<<N2 ; 
+    (N3_Display==1) ? cout<<"  ?" : cout<<"  "<<N3 ;
+    (N4_Display==1) ? cout<<"  ?" : cout<<"  "<<N4 ; cout<<endl;
+    cout<<"           ╚═════════════╝              Chance : "; for (int i=1; i<=Chance_Guess; i++){ cout<<"❤ "; } cout<<"\n\n"; sleep(1);
+    
+    if (Chance_Guess==0){
+        if (N1_Status==1||N2_Status==1||N3_Status==1||N4_Status==1){
+            if (Round==1){
+            cout<<"  : Oh, Almost done."<<endl; sleep(1);
+            cout<<"  : Don't worry!, I'll give you another chance to make amends.\n"<<endl;
+            }
+            else if (Round==2){
+                cout<<"  : Ha ha ha!, If so, I'll tell you one number."<<endl;
+                cout<<"  : This time is your last chance.\n"<<endl;
+            }
+            else if (Round==3){
+                cout<<"  : Alright!, It might be really hard."<<endl; 
+                cout<<"  : When you are ready, come again.\n"<<endl;
+            }
+            sleep(3); cout<<"Loading ."; sleep(1); cout<<"."; sleep(1); cout<<"."<<endl; sleep(1);
+        }
+    }
+    else {
+        if (Chance_Guess>0){ cout<<"  : ";
+        (Text==0) ? cout<<"Guess it."<<endl : 
+        (Text==1) ? cout<<"Wow!." <<endl : 
+        (Text==2) ? cout<<"Ha Ha Ha!, You guessed wrong."<<endl : 
+        (Text==3) ? cout<<"Yeah!, You lost one chance in vain."<<endl : cout<<"" ; sleep(1);
+        }
+        if (N1_Status==1||N2_Status==1||N3_Status==1||N4_Status==1){  
+        (Text==0) ? cout<<"" : cout<<"  : Keep guessing."<<endl ; cout<<"\n\n";
+        cin>>N_Form_User; while (N_Form_User<0||N_Form_User>9){ cin>>N_Form_User; } 
+        }
+    }
+    if (N1_Status==0&&N2_Status==0&&N3_Status==0&&N4_Status==0){ 
+        cout<<"  : Alright, You passed this test."<<endl; sleep(1);
+        cout<<"  : See you at the next test.\n"<<endl; 
+        sleep(2); cout<<"Loading "; sleep(1); cout<<"."; sleep(1); cout<<"."; sleep(1); cout<<"."<<endl;
+    }
+}
+void Create_Number (int & N1, int& N2, int& N3, int& N4){
+    N1=rand()%10;
+    do { N2=rand()%10; } while (N1==N2);
+    do { N3=rand()%10; } while (N1==N3||N2==N3);
+    do { N4=rand()%10; } while (N1==N4||N2==N4||N3==N4);
+}
+void Check (int& N_Form_User, int& Text, int & N1, int& N2, int& N3, int& N4, bool& N1_Display, bool& N2_Display, bool& N3_Display, bool& N4_Display, bool& N1_Status, bool& N2_Status, bool& N3_Status, bool& N4_Status){
+         if (N_Form_User==N1){ N1_Status=0; (N1_Display==1) ? N1_Display=0, Text=1 : Text=3 ; }
+    else if (N_Form_User==N2){ N2_Status=0; (N2_Display==1) ? N2_Display=0, Text=1 : Text=3 ; }
+    else if (N_Form_User==N3){ N3_Status=0; (N3_Display==1) ? N3_Display=0, Text=1 : Text=3 ; }
+    else if (N_Form_User==N4){ N4_Status=0; (N4_Display==1) ? N4_Display=0, Text=1 : Text=3 ; }
+    else    { Text=2; }
+}
+void End (){
+    Line ();
+    string X = "00000000000000000000000001111110010000010011111000000000000000000000000000|"
+               "00000000000000000000000001000000010100010010000010000000000000000000000000|"
+               "00000000000000000000000001111110010010010010000010000000000000000000000000|"
+               "00000000000000000000000001000000010001010010000010000000000000000000000000|"
+               "00000000000000000000000001111110010000010011111000000000000000000000000000|";
+    for (int i=0; i<X.length(); i++){
+        (X.at(i)=='1') ? cout<<"▪" : cout<<" " ;
+        (X.at(i)=='|') ? cout<<endl : cout<<"" ;
+    }
+    Line ();
+}
     
