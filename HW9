@@ -1,0 +1,235 @@
+1.ป้อนเซต A และ เซต B เก็บในลิงค์คิว(Linked queue)  จงหา A  intersec B
+
+#include <iostream>
+using namespace std;
+struct Set
+{
+    float Num;
+    Set *next;
+};
+void Input(Set*&);
+void FindIntersec(Set*, Set*);
+
+int main(){
+    Set *linA; Set *linB;
+    linA=NULL; linB=NULL;
+    
+    char ch;
+    cout<<"Set A"<<endl;
+    do{
+        Input (linA);
+        cout<<" again y/n ? "; cin>>ch;
+    } while (ch != 'n');
+    
+    cout<<"Set B"<<endl;
+    do{
+        Input (linB);
+        cout<<" again y/n ? "; cin>>ch;
+    } while (ch != 'n');
+    
+    FindIntersec (linA, linB);
+    return 0;
+}
+void Input (Set*& linS){
+    Set * tmp;
+    tmp = new Set;
+    
+    cout<<"Num : "; cin>>tmp->Num;
+    tmp->next = NULL;
+        
+    if (linS==NULL){ linS=tmp; }
+    else { tmp->next=linS, linS=tmp; }
+}
+void FindIntersec (Set* linA, Set* linB){
+    cout<<"  A  : ";
+    Set* tmpA;
+    tmpA=new Set;
+    tmpA=linA;
+    while (tmpA != NULL){ 
+        cout<<tmpA->Num<<" ";
+        tmpA=tmpA->next;
+    }
+    cout<<endl;
+    
+    cout<<"  B  : ";
+    Set* tmpB;
+    tmpB=new Set;
+    tmpB=linB;
+    while (tmpB != NULL){ 
+        cout<<tmpB->Num<<" ";
+        tmpB=tmpB->next;
+    }
+    cout<<endl;
+    
+    cout<<" A∩B : ";
+    while (linA != NULL){
+        Set * tmp;
+        tmp = new Set;
+        tmp = linB;
+        while (tmp != NULL){
+            if (linA->Num == tmp->Num){ cout<<linA->Num<<" "; }
+            tmp=tmp->next;
+        }
+        linA=linA->next;
+    }
+}
+
+2.จงเก็บข้อมูลนักศึกษาประกอบด้วย รหัส(id) ชื่อ(name) เพศ(sex) และอายุ(age) ของนักศึกษาจำนวนหนึ่ง ในโครงสร้าง Linked stack 
+จงหาว่ามีเพศชายและเพศหญิงอย่างละกี่คน อายุระหว่าง 1-17 ปีจำนวนกี่คน , 18-22ปีจำนวนกี่คน และมากกว่า 22 ปีจำนวนกี่คน
+
+#include <iostream>
+#include <iomanip>
+#include <string>
+using namespace std;
+struct Student
+{
+    int ID;
+    string Name;
+    bool Sex;
+    int Age;
+    Student *next;
+};
+void Push(Student*&);
+void Print(Student*);
+
+int main(){
+    Student *top;
+    top=NULL;
+    char ch;
+    do{
+        Push(top);
+        cout<<"run again y/n?"; cin>>ch;
+    } while (ch != 'n');
+    Print(top);
+    return 0;
+}
+void Push (Student *& top){
+    Student * p;
+    p = new Student;
+    
+    cout<<"ID   : "; cin>>p->ID;
+    cout<<"Name : "; cin>>p->Name;
+    cout<<"Sex  : "; cin>>p->Sex;
+    cout<<"Age  : "; cin>>p->Age;
+    p->next = NULL;
+    
+    if (top==NULL){ top=p; }
+    else{ 
+        p->next=top;
+        top = p;
+    }
+}
+void Print (Student* top){
+    int Male=0,   M_1_17=0, M_18_22=0, M_22=0;
+    int Female=0, F_1_17=0, F_18_22=0, F_22=0;
+    
+    while (top != NULL){
+        if (top->Sex==true){ 
+            Male++;
+            if (top->Age<18){ M_1_17++; }
+            else if (top->Age<23){ M_18_22++; }
+            else { M_22++; }
+        }
+        else{
+            Female++;
+            if (top->Age<18){ F_1_17++; }
+            else if (top->Age<23){ F_18_22++; }
+            else { F_22++; }
+        }
+        top=top->next;
+    }
+    
+    cout<<"-----------------------------------------------------------"<<endl;
+    cout<<"   Sex     |   1-17    |   18-22   |   22-end   |  Total  |"<<endl;
+    cout<<"-----------------------------------------------------------"<<endl;
+    cout<<"  Male     |"
+        <<setw(10)<<M_1_17
+        <<setw(12)<<M_18_22
+        <<setw(12)<<M_22
+        <<setw(11)<<Male<<" |"<<endl;
+    cout<<"-----------------------------------------------------------"<<endl;
+    cout<<"  Female   |"
+        <<setw(10)<<F_1_17
+        <<setw(12)<<F_18_22
+        <<setw(12)<<F_22
+        <<setw(11)<<Female<<" |"<<endl;
+    cout<<"-----------------------------------------------------------"<<endl;
+    cout<<"  Total    |"
+        <<setw(10)<<M_1_17+F_1_17
+        <<setw(12)<<M_18_22+F_18_22
+        <<setw(12)<<M_22+F_22
+        <<setw(11)<<Male+Female<<" |"<<endl;
+    cout<<"-----------------------------------------------------------"<<endl;
+}
+
+3.จงเขียนโปรแกรมรับข้อมูลนักศึกษาประกอบด้วยรหัสนักศึกษา(id), ชื่อนักศึกษา(name), จำนวนหน่วยกิตที่สอบผ่าน(credit) และเกรดเฉลี่ย(average) ของนักศึกษา n คน
+เก็บในลิสต์เชื่อมโยงทางเดียวให้ตัวแปร first ชี้อยู่ที่โหนดแรก
+จงพิมพ์นักศึกษาที่เกรดเฉลี่ยไม่ถึง 2.00 (Not considered) และสรุปด้วยว่านักศึกษาทั้งหมดมีกี่คน ค่าเฉลี่ยไม่ถึงเกณฑ์ทั้งหมดกี่คน กำหนดให้แบ่งโปรแกรมออกเป็น 3 ฟังก์ชันย่อยดังนี้
+
+(1)Input ทำหน้าที่รับข้อมูลนักศึกษาจำนวนใดๆเก็บในลิสต์เชื่อมโยงทางเดียวให้ตัวแปร first ชี้ข้อมูลของนักศึกษาคนแรก
+
+(2)FindNum ทำหน้าที่หาจำนวนของนักศึกษาทั้งหมดที่เก็บในลิสต์เชื่อมโยง
+
+(3)FindStudent ทำหน้าที่ตรวจสอบข้อมูลที่เก็บในลิสต์เชื่อมโยงโดยพิมพ์เฉพาะนักศึกษาที่เกรดเฉลี่ยไม่ถึง 2.00 และสรุปจำนวนของนักศึกษาที่เกรดเฉลี่ยไม่ถึง 2.00 ออกทางจอภาพ
+
+#include <iostream>
+#include <iomanip>
+#include <string>
+using namespace std;
+struct Student
+{
+    string ID;
+    string Name;
+    int Credit;
+    float Average;
+    Student *next;
+};
+void Input(Student*&);
+void FindStudent(Student*);
+
+int main(){
+    Student *First;
+    First=NULL;
+    char ch;
+    do{
+        Input(First);
+        cout<<"run again y/n?"; cin>>ch;
+    } while (ch != 'n');
+    FindStudent(First);
+    return 0;
+}
+void Input (Student*& First){
+    Student * p;
+    p = new Student;
+    
+    cout<<"ID       : "; cin>>p->ID;
+    cout<<"Name     : "; cin>>p->Name;
+    cout<<"Credit   : "; cin>>p->Credit;
+    cout<<"Average  : "; cin>>p->Average;
+    p->next = NULL;
+        
+    if (First==NULL){ First=p; }
+    else { p->next=First, First=p; }
+}
+void FindStudent (Student* First){
+    int Total_1=0;
+    int Total_2=0;
+    
+    cout<<"-----------------------------------------------------------"<<endl;
+    cout<<"    ID     |       Name         |   Credit   |   Average  |"<<endl;
+    cout<<"-----------------------------------------------------------"<<endl;
+    while (First != NULL){
+        if (First->Average<2.00){ 
+            cout<<setw(10)<<First->ID
+                <<setw(21)<<First->Name
+                <<setw(13)<<First->Credit
+                <<setw(13)<<First->Average<<" |"<<endl;
+            Total_2++;    
+        }
+        Total_1++;
+        First=First->next;
+    }
+    cout<<"-----------------------------------------------------------"<<endl;
+    cout<<"  Total      : "<<Total_1<<endl;
+    cout<<"  Lower 2.00 : "<<Total_2<<endl;
+}
