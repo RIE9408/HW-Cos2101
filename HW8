@@ -1,0 +1,443 @@
+1.ปรับปรุงกรณีศึกษาที่ 1 โดยเขียนฟังก์ชันในการพิมพ์สินค้าที่มีสินค้าเหลือในสต๊อกต่ำกว่าจุดสั่งซื้อ(reorder) กำหนดจุดสั่งซื้อเท่ากับ 50
+
+#include <iostream>
+#include <string>
+#include <iomanip>
+using namespace std;
+struct product
+{
+    string id;
+    string name;
+    float  cost;
+    int    instock;
+};
+struct Sell
+{
+    string id;
+    string name;
+    float  cost;
+    int    piece;
+    float  amount;
+};
+
+void Menu (char&) ;
+int  Search (const product [] , int, int);
+void Input (product [], int&);
+void SellItem (product [], int);
+void Output (const Sell [], int);
+void CheckStock (product [], int);
+void Reorder (product item [], int);
+
+int main(){
+    product item[100];
+    int n=0;
+    char select;
+    //cout<<fixed<<setprecision(2);
+    do{
+        //system("cls");
+        Menu (select);
+        switch (select){
+            case '1': Input      (item, n); break;
+            case '2': SellItem   (item, n); break;
+            case '3': CheckStock (item, n); break;
+            case '4': Reorder    (item, n);
+        }
+    } while (select != '5');
+    return 0;
+}
+void Menu (char& select){
+    cout<<"----------------------------------------------------------------\n";
+    cout<<" --- Menu --- \n";
+    cout<<" 1. Add item to stock \n";
+    cout<<" 2. Sell product \n";
+    cout<<" 3. Check stock \n";
+    cout<<" 4. Reorder \n";
+    cout<<" 5. End program \n\n";
+    cout<<"Please select 1 / 2 / 3 / 4 / 5 ? \n"; cin>>select;
+}
+int Search (const product item[ ] , int n, string key){
+    for (int i=0; i<n; i++){
+        if (key==item[i].id){ return i; } //found at i
+    }
+    return -1 ; // not found
+}
+void Input (product item[ ], int& n){
+    string key;
+    char repeat;
+    int num;
+    cout<<"----------------------------------------------------------------\n";
+    cout<<" --- Add item to stock --- \n";
+    do{
+        cout<<"\n id      : "; cin>>key;
+        int index = Search(item,n,key);
+        if(index==-1){ //new product
+            //cout<<"New product"<<endl;
+            item[n].id=key;
+            cout<<" name    : ";    cin>>item[n].name;
+            cout<<" cost    : ";    cin>>item[n].cost;
+            cout<<" instock : "; cin>>item[n].instock;
+            n++;
+        }
+        else { // Add stock
+            cout<<"------------------------------------------------------\n";
+            cout<<"       ID      |       Name       |      Instock      \n";
+            cout<<"------------------------------------------------------\n";
+            cout<<setw(14)<<item[index].id
+                <<setw(19)<<item[index].name
+                <<setw(19)<<item[index].instock<<endl;
+            cout<<"\n------------------------------------------------------\n";
+            
+            cout<<"\n How many to add ? : "; cin>>num;
+            item[index].instock += num;
+            
+            cout<<"------------------------------------------------------\n";
+            cout<<"       ID      |       Name       |      Instock      \n";
+            cout<<"------------------------------------------------------\n";
+            cout<<setw(14)<<item[index].id
+                <<setw(19)<<item[index].name
+                <<setw(19)<<item[index].instock<<endl;
+            cout<<"\n------------------------------------------------------\n";    
+        }
+        cout<<"\n Repeat Y/N ? "; cin>>repeat;
+    }while (repeat=='Y' || repeat=='y');
+}
+void SellItem (product item[ ], int n){
+    string key;
+    char repeat;
+    Sell order[10];
+    int p=0;
+    float total=0.0;
+    cout<<"----------------------------------------------------------------\n";
+    cout<<" --- Sell product --- \n";
+    if (n==0){ cout<<" No products in stock\n"; }
+    else{
+        do{
+            cout<<" id : "; cin>>key;
+            int index = Search(item, n, key);
+            if (index==-1){ cout<<" Invalid id:"<<endl; }
+            else{
+                int num=0;
+                cout<<"------------------------------------------------------\n";
+                cout<<"       ID      |       Name       |      Instock      \n";
+                cout<<"------------------------------------------------------\n";
+                cout<<setw(14)<<item[index].id
+                    <<setw(19)<<item[index].name
+                    <<setw(19)<<item[index].instock<<endl;
+                cout<<"------------------------------------------------------\n";
+                
+                cout<<" How many to sell : "; cin>>num;
+                while (num>item[index].instock){
+                    cout<<" ** Not enough products. ** \n";
+                    cout<<" How many to sell : "; cin>>num;
+                }
+                item[index].instock -= num;
+                cout<<"------------------------------------------------------\n";
+                cout<<"       ID      |       Name       |      Instock      \n";
+                cout<<"------------------------------------------------------\n";
+                cout<<setw(14)<<item[index].id
+                    <<setw(19)<<item[index].name
+                    <<setw(19)<<item[index].instock<<endl;
+                cout<<"------------------------------------------------------\n";
+                
+                order[p].id     = item[index].id;
+                order[p].name   = item[index].name;
+                order[p].cost   = item[index].cost;
+                order[p].piece  = num;
+                order[p].amount = num*item[index].cost;
+                total += order[p].amount;
+                p++;
+            }
+            cout<<" Repeat Y/N ? "; cin>>repeat;
+        } while (repeat=='Y' || repeat=='y');
+        Output(order, p);
+        cout<<" Total  = "<<total<<" baths"<<endl<<endl;
+        //system("pause");
+    }    
+}
+void Output(const Sell order[ ], int p){
+    int totalpeice=0;
+    cout<<endl;
+    cout<<" RAM HUAMARK"<<endl;
+    cout<<" RECEIPT INVOICE"<<endl;
+    cout<<endl;
+    for(int i=0; i<p; i++){
+        cout<<setw(5)<<order[i].piece<<" P"
+            <<setw(5)<<order[i].name
+            <<setw(8)<<order[i].amount<<endl;
+        totalpeice += order[i].piece;
+    }
+    cout<<endl<<" Pieces = "<<totalpeice<<" P"<<endl;
+} //end main
+void CheckStock(product item[ ], int n){
+    product temp;
+    int row, col;
+    for (row=0; row<n-1; row++){
+        for(col=row+1; col<n; col++){
+            if(item[row].id>item[col].id){
+                temp = item[row];
+                item[row] = item[col];
+                item[col] = temp;
+            }
+        }    
+    }
+    cout<<"----------------------------------------------------------------\n";
+    cout<<" --- Check stock --- \n";
+    cout<<"------------------------------------------------------\n";
+    cout<<"       ID      |       Name       |      Instock      \n";
+    cout<<"------------------------------------------------------\n";
+    if (n==0){ cout<<" No products in stock\n"; }
+    else{
+        for (int i=0; i<n; i++){
+            cout<<setw(14)<<item[i].id
+                <<setw(19)<<item[i].name
+                <<setw(19)<<item[i].instock<<endl;
+        }
+    }    
+    cout<<"\n------------------------------------------------------\n\n";
+    //system("pause");
+}
+void Reorder (product item[ ], int n){
+    cout<<"----------------------------------------------------------------\n";
+    cout<<" --- Reorder ---\n";
+    cout<<"------------------------------------------------------\n";
+    cout<<"       ID      |       Name       |      Instock      \n";
+    cout<<"------------------------------------------------------\n";
+    bool found;
+    if (n==0){ cout<<" No products in stock.\n"; }
+    else{
+        for (int i=0; i<n; i++){
+            if (item[i].instock<50){
+                cout<<setw(14)<<item[i].id
+                    <<setw(19)<<item[i].name
+                    <<setw(19)<<item[i].instock<<endl;
+                found=false;    
+            }        
+        }
+    if (found){ cout<<" There is enough stock for an order of 50 or more.\n"; }
+    }
+    cout<<"\n------------------------------------------------------\n\n";
+}
+
+2.จงเขียนโปรแกรมต้องการนำระเบียนลูกค้า(customer) ของสหกรณ์ออมทรัพย์รามคำแหงเก็บในตัวแปรแถวลำดับ 1 มิติ  ระเบียนลูกค้าประกอบด้วย รหัสบัญชี(id) ชื่อบัญชี(name) ที่อยู่(Address) และเงินฝาก(Deposit)
+
+        เลือก1 เป็นการเปิดบัญชีใหม่  
+              ระบบจะแสดงหน้าจอให้ผู้ใช้ป้อนรหัสบัญชี(id) ชื่อบัญชี(name) ที่อยู่(Address) และเงินฝาก (Deposit) โดยรหัสบัญชีต้องไม่ซ้ำกัน   	 
+        เลือก2 เป็นการฝากเงิน
+              โดยผู้ใช้ป้อนรหัสบัญชี(id)ที่ต้องการ ระบบจะตรวจสอบเพื่อค้นหาระเบียนลูกค้า เพื่อให้ผู้ใช้งานป้อนยอดฝากเพื่อปรับปรุงบัญชีให้ถูกต้อง
+        เลือก3 เป็นการถอนเงิน
+              โดยผู้ใช้ป้อนรหัสบัญชี(id)ที่ต้องการ ระบบจะตรวจสอบเพื่อค้นหาระเบียนลูกค้า เพื่อให้ผู้ใช้งานป้อนยอดถอนแต่ต้องมีเงินติดบัญชีอย่างน้อย 100 บาท ระบบทำการปรับปรุงบัญชีให้ถูกต้อง
+        เลือก4 เป็นการคิดดอกเบี้ยทบต้น
+              โดยระบบจะให้ผู้ใช้ป้อนอัตราดอกเบี้ยต่อปี(rate) ทางแป้นพิมพ์ เพื่อคิดดอกเบี้ยทบต้นของทุกบัญชีซึ่งกระทำทุกวันได้ดอกเบี้ยเป็นรายวัน โปรแกรมจะแสดงเงินฝากเก่า ดอกเบี้ยที่ได้รับ และเงินฝากใหม่ปรากฏบนจอภาพ
+        เลือก5 เป็นการจบการทำงานซ้ำ
+
+#include <iostream>
+#include <string>
+#include <iomanip>
+using namespace std;
+struct product
+{
+    string id;
+    string name;
+    string address;
+    float  deposit;
+};
+
+void Menu (char&) ;
+int  Search (const product [] , int, int);
+void Add_new_account (product [], int&);
+void Add_deposit (product [], int);
+void Cut_deposit (product [], int);
+void Interest (product [], int);
+
+int main(){
+    product item[100];
+    int n=0;
+    char select;
+    do{
+        Menu (select);
+        switch (select){
+            case '1': Add_new_account (item, n); break;
+            case '2': Add_deposit     (item, n); break;
+            case '3': Cut_deposit     (item, n); break;
+            case '4': Interest        (item, n);
+        }
+    } while (select != '5');
+    return 0;
+}
+void Menu (char& select){
+    cout<<"----------------------------------------------------------------\n";
+    cout<<" --- Menu --- \n";
+    cout<<" 1. Add new account \n";
+    cout<<" 2. Deposit \n";
+    cout<<" 3. Withdraw \n";
+    cout<<" 4. Interest \n";
+    cout<<" 5. End program \n\n";
+    cout<<"Please select 1 / 2 / 3 / 4 / 5 ? \n"; cin>>select;
+}
+int Search (const product item[ ] , int n, string key){
+    for (int i=0; i<n; i++){
+        if (key==item[i].id){ return i; } //found at i
+    }
+    return -1 ; // not found
+}
+void Add_new_account (product item[ ], int& n){
+    string key;
+    char repeat;
+    int num;
+    cout<<"----------------------------------------------------------------\n";
+    cout<<" --- Add new account --- \n";
+    do{
+        cout<<"\n id      : "; cin>>key;
+        
+        int index = Search(item,n,key);
+        if(index==-1){ //new product
+            //cout<<"New product"<<endl;
+            item[n].id=key;
+            cout<<" name    : "; cin>>item[n].name;
+            cout<<" address : "; cin>>item[n].address;
+            cout<<" deposit : "; cin>>item[n].deposit;
+            n++;
+        }
+        else { // Add stock
+            cout<<" ---------------------------------\n";
+            cout<<"        ID      |       Name      \n";
+            cout<<" ---------------------------------\n";
+            cout<<setw(14)<<item[index].id
+                <<setw(18)<<item[index].name<<endl;
+            cout<<"\n ---------------------------------\n";
+            
+            cout<<"\n ** This account number has already been used. ** \n";   
+        }
+        cout<<"\n Repeat Y/N ? "; cin>>repeat;
+    }while (repeat=='Y' || repeat=='y');
+}
+void Add_deposit (product item[ ], int n){
+    cout<<"----------------------------------------------------------------\n";
+    cout<<" --- Deposit --- \n";
+    if (n==0){ cout<<" No account in system \n"; }
+    else{
+        string key;
+        char repeat;
+        int p=0;
+        float total=0.0;
+        do{
+            cout<<" id : "; cin>>key;
+            int index = Search(item, n, key);
+            if (index==-1){ cout<<" ** Invalid id ** "<<endl; }
+            else{
+                int num=0;
+                cout<<" ------------------------------------------------------\n";
+                cout<<"        ID      |       Name       |      Deposit      \n";
+                cout<<" ------------------------------------------------------\n";
+                cout<<setw(14)<<item[index].id
+                    <<setw(19)<<item[index].name
+                    <<setw(19)<<item[index].deposit<<endl;
+                cout<<" ------------------------------------------------------\n";
+                        
+                cout<<" How many to add : "; cin>>num;
+                item[index].deposit += num;
+                
+                cout<<" ------------------------------------------------------\n";
+                cout<<"        ID      |       Name       |      Deposit      \n";
+                cout<<" ------------------------------------------------------\n";
+                cout<<setw(14)<<item[index].id
+                    <<setw(19)<<item[index].name
+                    <<setw(19)<<item[index].deposit<<endl;
+                cout<<" ------------------------------------------------------\n";
+                
+                cout<<endl;
+                cout<<" RAM SAVINGS \n";
+                cout<<" RECEIPT \n\n";
+                cout<<" ID      : "<<item[index].id<<endl;
+                cout<<" Add     : "<<num<<endl;
+                cout<<" Balance : "<<item[index].deposit<<endl;
+            }
+            cout<<"\n Repeat Y/N ? "; cin>>repeat;
+        } while (repeat=='Y' || repeat=='y');    
+    }
+}
+void Cut_deposit (product item[ ], int n){
+    cout<<"----------------------------------------------------------------\n";
+    cout<<" --- Withdraw --- \n";
+    if (n==0){ cout<<" No account in system \n"; }
+    else{
+        string key;
+        char repeat;
+        int p=0;
+        float total=0.0;
+        do{
+            cout<<" id : "; cin>>key;
+            int index = Search(item, n, key);
+            if (index==-1){ cout<<" ** Invalid id ** "<<endl; }
+            else{
+                int num=0;
+                cout<<" ------------------------------------------------------\n";
+                cout<<"        ID      |       Name       |      Deposit      \n";
+                cout<<" ------------------------------------------------------\n";
+                cout<<setw(14)<<item[index].id
+                    <<setw(19)<<item[index].name
+                    <<setw(19)<<item[index].deposit<<endl;
+                cout<<" ------------------------------------------------------\n";
+                
+                if (item[index].deposit<100){ cout<<"** deposit less than 100, can't make a transaction ** \n"; }
+                else {
+                    cout<<" How many to cut : "; cin>>num;
+                    while (num>item[index].deposit){ 
+                        cout<<" ** not enough deposit ** \n";
+                        cout<<" How many to cut : "; cin>>num;
+                    }
+                    item[index].deposit -= num;
+                    
+                    cout<<" ------------------------------------------------------\n";
+                    cout<<"       ID      |       Name       |      Deposit      \n";
+                    cout<<" ------------------------------------------------------\n";
+                    cout<<setw(14)<<item[index].id
+                        <<setw(19)<<item[index].name
+                        <<setw(19)<<item[index].deposit<<endl;
+                    cout<<" ------------------------------------------------------\n";
+                
+                    cout<<endl;
+                    cout<<" RAM SAVINGS \n";
+                    cout<<" RECEIPT \n\n";
+                    cout<<" ID      : "<<item[index].id<<endl;
+                    cout<<" Cut     : "<<num<<endl;
+                    cout<<" Balance : "<<item[index].deposit<<endl;
+                }
+            }
+            cout<<"\n Repeat Y/N ? "; cin>>repeat;
+        } while (repeat=='Y' || repeat=='y');    
+    }   
+}
+void Interest (product item[ ], int n){
+    cout<<"----------------------------------------------------------------\n";
+    cout<<" --- Interest --- \n";
+    if (n==0){ cout<<" No account in system \n"; }
+    else{
+        product temp;
+        int row, col;
+        float rate, interest;
+        cout<<"rate : "; cin>>rate;
+        for (row=0; row<n-1; row++){
+            for(col=row+1; col<n; col++){
+                if(item[row].id>item[col].id){
+                    temp = item[row];
+                    item[row] = item[col];
+                    item[col] = temp;
+                }
+            }    
+        }
+        cout<<" -------------------------------------------------------------\n";
+        cout<<"        ID      |    Deposit    |    Interest   |   Balanc    \n";
+        cout<<" -------------------------------------------------------------\n";
+        if (n==0){ cout<<" No account in system "; }
+        else{
+            for (int i=0; i<n; i++){
+                cout<<setw(14)<< item[i].id
+                    <<setw(16)<< item[i].deposit
+                    <<setw(16)<<(item[i].deposit*(rate/100))/365
+                    <<setw(14)<< item[i].deposit+(item[i].deposit*(rate/100))/365<<endl;
+            }
+        }
+        cout<<"\n -------------------------------------------------------------\n\n";
+    }
+}
